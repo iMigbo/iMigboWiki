@@ -3,26 +3,22 @@ package com.example.imigbomonsterwiki;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
-import com.google.android.youtube.player.YouTubeThumbnailView;
 
-public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, YouTubePlayer.Provider{
 
-    private final String YOUTUBE_CODE = "AIzaSyCGAMpsuhtzTQepesUrzZ1FZlmpRCfdnKw";
     private String lastVideoCode = "UIvNqlj-U2I";
 
     private TextView mTextMessage;
     private LinearLayout linearLayout;
     private YouTubePlayerView youTubePlayerView;
-
+    private YouTubePlayer youTubePlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +29,10 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         navigation.setSelectedItemId(R.id.navigation_monsters);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         youTubePlayerView = new YouTubePlayerView(this);
+        final String YOUTUBE_CODE = "AIzaSyCGAMpsuhtzTQepesUrzZ1FZlmpRCfdnKw";
         youTubePlayerView.initialize(YOUTUBE_CODE, MainActivity.this);
+        initialize(YOUTUBE_CODE,this);
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -42,7 +41,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             switch (item.getItemId()) {
                 case R.id.navigation_news:
                     mTextMessage.setText(R.string.title_news);
-
+                    youTubePlayer.cueVideo(lastVideoCode);
                     linearLayout.addView(youTubePlayerView);
                     return true;
                 case R.id.navigation_monsters:
@@ -58,6 +57,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     private void cleanLayout()
     {
+        youTubePlayer.pause();
         linearLayout.removeAllViews();
     }
 
@@ -68,10 +68,16 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
         youTubePlayer.cueVideo(lastVideoCode);
+        this.youTubePlayer = youTubePlayer;
     }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+    }
+
+    @Override
+    public void initialize(String s, YouTubePlayer.OnInitializedListener onInitializedListener) {
 
     }
 }
