@@ -10,6 +10,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import java.util.ArrayList;
 
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, YouTubePlayer.Provider{
 
@@ -19,6 +20,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     private LinearLayout linearLayout;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,12 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         youTubePlayerView.initialize(YOUTUBE_CODE, MainActivity.this);
         initialize(YOUTUBE_CODE,this);
 
+        //Initialize monster database:
+        MonsterDatabase monsterDatabase = new MonsterDatabase(this);
+        final ArrayList<Monster> monsters = monsterDatabase.getMonstersDisplayOrderByID();
+        for(int i=0; i< monsters.size(); i++){
+            System.out.println("READ: "+monsters.get(i).getName());
+        }
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
