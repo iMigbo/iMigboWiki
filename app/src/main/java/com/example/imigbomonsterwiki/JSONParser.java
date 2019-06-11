@@ -1,29 +1,19 @@
 package com.example.imigbomonsterwiki;
 
 import android.os.AsyncTask;
-import android.renderscript.ScriptGroup;
-import android.util.JsonReader;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class JSONParser extends AsyncTask<Object, Monster[], Object> {
 
@@ -64,7 +54,7 @@ public class JSONParser extends AsyncTask<Object, Monster[], Object> {
                 }
 
                 monster.setRarity(monsterData.getInt("rarity"));
-                monster.setImageName(monsterData.getString("img_name"));
+                monster.setImageKey(monsterData.getString("img_name"));
 
                 //The attacks can be 9 or 12 depending of the monster
                 addAttacks(monsterData.getJSONArray("tier_1"), monster);

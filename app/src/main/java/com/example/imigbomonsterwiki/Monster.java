@@ -7,7 +7,7 @@ public class Monster {
     private String name;
     private ArrayList<String> attributes = new ArrayList<>();
     private int rarity;
-    private String imageName;
+    private String imageKey;
     private ArrayList<Integer> attacks = new ArrayList<>(); //Pending JSON
     private int specialAttack; //Pending JSON
     private ArrayList<Integer> traits = new ArrayList<>(); //Pending JSON
@@ -38,12 +38,12 @@ public class Monster {
         this.name = name;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImageKey() {
+        return imageKey;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageKey(String imageKey) {
+        this.imageKey = imageKey;
     }
 
     public String getCombatRole() {
