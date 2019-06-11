@@ -17,7 +17,6 @@ import java.net.URL;
 
 public class JSONParser extends AsyncTask<Object, Monster[], Object> {
 
-    private static final String monsterImageURL = "http://mci-static-s1.socialpointgames.com/static/monstercity/mobile/ui/monsters/<MONSTER>@2x.png";
     private static final String monsterJSONURL = "https://mcx.socialpointgames.com/bs_toolbox/get_config?collection=items.units&columns=id,name,nameKey,attributes,rarity,img_name,tier_1,tier_2,tier_3,tier_4,special_skill,traits,life,power,speed,stamina,monster_origin,relics_categories,monster_combat_role";
 
     private MonsterDatabase database;

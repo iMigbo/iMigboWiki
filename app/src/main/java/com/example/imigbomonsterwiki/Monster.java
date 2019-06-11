@@ -1,8 +1,9 @@
 package com.example.imigbomonsterwiki;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Monster {
+public class Monster implements Serializable {
     private int id;
     private String name;
     private ArrayList<String> attributes = new ArrayList<>();

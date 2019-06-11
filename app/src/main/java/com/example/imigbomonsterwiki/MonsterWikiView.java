@@ -1,9 +1,11 @@
 package com.example.imigbomonsterwiki;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -89,9 +91,9 @@ public class MonsterWikiView {
         for(byte i=0; i < MonsterFilter.elementsList.length; i++){
             ImageView elementIcon = new ImageView(appContext);
             elementIcon.setImageDrawable(appContext.getDrawable(MonsterFilter.getElementIcon(MonsterFilter.elementsList[i])));
-            elementIcon.setPadding(10, 10, 10, 10);
-            elementIcon.setMinimumWidth(130);
-            elementIcon.setMinimumHeight(130);
+            elementIcon.setPadding(10, 10, 0, 20);
+            elementIcon.setMinimumWidth(150);
+            elementIcon.setMinimumHeight(150);
             elementIcon.setOnClickListener(onElementSelected);
             elementIcon.setId(i);
 
@@ -141,7 +143,12 @@ public class MonsterWikiView {
     private View.OnClickListener onMonsterImageClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            System.out.println("Image click: "+v.getId());
+            MonsterDatabase monsterDatabase = new MonsterDatabase(appContext, false);
+            Monster monster = monsterDatabase.getMonsterByID(v.getId());
+            Intent monsterInfoViewIntent = new Intent(appContext, MonsterInfoActivity.class);
+            monsterInfoViewIntent.putExtra("monsterInfo", monster);
+            monsterInfoViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            appContext.startActivity(monsterInfoViewIntent);
         }
     };
 
@@ -174,43 +181,8 @@ public class MonsterWikiView {
         }
     }
 
-    private void getMonsterImage(String imageKey, byte monsterStage, final ImageView imageView){
-        final String kImageURL = "http://mci-static-s1.socialpointgames.com/static/monstercity/mobile/ui/monsters/ui_";
-        GetImageFromURL getImageFromURL = new GetImageFromURL();
-        getImageFromURL.execute(kImageURL+imageKey+"_"+monsterStage, imageView);
+    public void getMonsterImage(String imageKey, byte monsterStage, final ImageView imageView){
+        new ImageParser(imageKey, monsterStage, imageView);
     }
 
-    private class GetImageFromURL extends AsyncTask <Object, Bitmap, Bitmap>{
-
-        ImageView imageView;
-        final private static String kImagenEndURL = "@2x.png";
-
-        @Override
-        protected Bitmap doInBackground(Object... params) {
-            Bitmap image = null;
-            imageView = (ImageView) params[1];
-            byte version = 1;
-            boolean imageCorrect = false;
-
-            do{
-                try {
-                    final InputStream is = new URL(String.valueOf(params[0])+"_v"+version+kImagenEndURL).openStream();
-                    image = BitmapFactory.decodeStream(is);
-                    imageCorrect = true;
-                    is.close();
-                } catch(FileNotFoundException fnfe) {
-                    version++;
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-            }while(!imageCorrect && version < 5);
-
-            return image;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap image){
-            imageView.setImageBitmap(image);
-        }
-    }
 }
