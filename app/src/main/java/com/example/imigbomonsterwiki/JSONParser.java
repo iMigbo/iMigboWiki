@@ -32,10 +32,10 @@ public class JSONParser extends AsyncTask<Object, Monster[], Object> {
         database = (MonsterDatabase) params[1];
 
         try{
-            URL itemsURL = new URL(monsterJSONURL);
-            HttpURLConnection conn = (HttpURLConnection) itemsURL.openConnection();
+            final URL itemsURL = new URL(monsterJSONURL);
+            final HttpURLConnection conn = (HttpURLConnection) itemsURL.openConnection();
 
-            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
+            final InputStream inputStream = new BufferedInputStream(conn.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line = bufferedReader.readLine();
@@ -87,6 +87,7 @@ public class JSONParser extends AsyncTask<Object, Monster[], Object> {
 
                 database.addMonster(monster);
             }
+            bufferedReader.close();
         }catch (MalformedURLException e) {
             System.err.println(e.toString());
         }catch (IOException e){

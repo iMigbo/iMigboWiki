@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -12,41 +14,35 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, YouTubePlayer.Provider{
-
-    private String lastVideoCode = "UIvNqlj-U2I";
-
-    private Context context;
 
     private TextView mTextMessage;
     private LinearLayout linearLayout;
-    private YouTubePlayer youTubePlayer;
-    private YouTubePlayerView youTubePlayerView;
     private MonsterDatabase monsterDatabase;
     private MonsterWikiView monsterWikiView;
-
+    private final String kDefaultVideoKey = "UIvNqlj-U2I";
+    private YoutubeVideo lastVideo = new YoutubeVideo(kDefaultVideoKey);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this.getApplicationContext();
         linearLayout = findViewById(R.id.linearLayout);
         mTextMessage = findViewById(R.id.message);
 
         //Initialize Youtube View:
-        final String YOUTUBE_CODE = "AIzaSyCGAMpsuhtzTQepesUrzZ1FZlmpRCfdnKw";
-        youTubePlayerView = new YouTubePlayerView(this);
-        youTubePlayerView.initialize(YOUTUBE_CODE, MainActivity.this);
-        initialize(YOUTUBE_CODE,this);
+         new YoutubeView(this, lastVideo);
 
         //Initialize monster database:
         monsterDatabase = new MonsterDatabase(this,false);
         monsterDatabase.parseMonstersJSON();
-        monsterWikiView = new MonsterWikiView(context);
+        monsterWikiView = new MonsterWikiView(this);
 
         //Default Layout:
         final BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setYoutubeLayout();
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -69,14 +65,21 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
     private void cleanLayout()
     {
-        youTubePlayer.pause();
         linearLayout.removeAllViews();
     }
 
     private void setYoutubeLayout(){
         mTextMessage.setText(R.string.title_news);
-        youTubePlayer.cueVideo(lastVideoCode);
-        linearLayout.addView(youTubePlayerView);
+
+            final TextView videoTitleTextView = new TextView(this);
+            videoTitleTextView.setText(lastVideo.getTitle());
+            videoTitleTextView.setTextSize(20);
+
+            YouTubePlayerView youTubePlayer = new YouTubePlayerView(this);
+            youTubePlayer.initialize(lastVideo.getKey(), this);
+
+            linearLayout.addView(videoTitleTextView);
+            linearLayout.addView(youTubePlayer);
     }
 
     private void setMonsterWikiLayout(){
@@ -85,15 +88,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         monsterWikiView.updateMonsterTableView(monsterDatabase.getMonstersDisplayOrderByRelease(0,20), true);
     }
 
-    private void getLastiMigboVideo()
-    {
-    }
-
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        youTubePlayer.cueVideo(lastVideoCode);
-        this.youTubePlayer = youTubePlayer;
-        setYoutubeLayout();
+        youTubePlayer.cueVideo(lastVideo.getKey());
     }
 
     @Override
