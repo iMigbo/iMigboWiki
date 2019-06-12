@@ -2,11 +2,7 @@ package com.example.imigbomonsterwiki;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
@@ -17,12 +13,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class MonsterWikiView {
@@ -104,7 +94,7 @@ public class MonsterWikiView {
         container.addView(elementsScrollView);
     }
 
-    public void updateMonsterTableView(ArrayList<MonsterDisplay> monstersList, boolean resetTable){
+    public void updateMonsterTableView(ArrayList<MonsterDisplayData> monstersList, boolean resetTable){
         if(resetTable){
             monsterTable.removeAllViews();
         }
@@ -144,9 +134,9 @@ public class MonsterWikiView {
         @Override
         public void onClick(View v) {
             MonsterDatabase monsterDatabase = new MonsterDatabase(appContext, false);
-            Monster monster = monsterDatabase.getMonsterByID(v.getId());
+            MonsterData monsterData = monsterDatabase.getMonsterByID(v.getId());
             Intent monsterInfoViewIntent = new Intent(appContext, MonsterInfoActivity.class);
-            monsterInfoViewIntent.putExtra("monsterInfo", monster);
+            monsterInfoViewIntent.putExtra("monsterInfo", monsterData);
             monsterInfoViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             appContext.startActivity(monsterInfoViewIntent);
         }

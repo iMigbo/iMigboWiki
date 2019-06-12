@@ -10,25 +10,21 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Type;
-
 public class MonsterInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monster_info);
-        final Monster monster = (Monster) getIntent().getSerializableExtra("monsterInfo");
-        ((TextView)findViewById(R.id.monsterNameTextView)).setText(monster.getName());
+        final MonsterData monsterData = (MonsterData) getIntent().getSerializableExtra("monsterInfo");
+        ((TextView)findViewById(R.id.monsterNameTextView)).setText(monsterData.getName());
 
-        //Monster image:
+        //MonsterData image:
         ImageView monsterImage = new ImageView(getApplicationContext());
         monsterImage.setMinimumHeight(500);
         monsterImage.setMinimumWidth(500);
         monsterImage.setPadding(0,30,0,0);
-        new ImageParser(monster.getImageKey(), (byte) 3, monsterImage);
+        new ImageParser(monsterData.getImageKey(), (byte) 3, monsterImage);
 
         //Power Stat:
         ImageView powerImage = new ImageView(getApplicationContext());
@@ -41,7 +37,7 @@ public class MonsterInfoActivity extends AppCompatActivity {
         powerTextView.setTypeface(null, Typeface.BOLD);
 
         TextView powerAmount = new TextView(getApplicationContext());
-        powerAmount.setText(String.valueOf(monster.getStrength()));
+        powerAmount.setText(String.valueOf(monsterData.getStrength()));
 
         final TableRow powerRow = new TableRow(getApplicationContext());
         powerRow.addView(powerImage);
@@ -60,7 +56,7 @@ public class MonsterInfoActivity extends AppCompatActivity {
         lifeTextView.setTypeface(null, Typeface.BOLD);
 
         TextView lifeAmount = new TextView(getApplicationContext());
-        lifeAmount.setText(String.valueOf(monster.getLife()));
+        lifeAmount.setText(String.valueOf(monsterData.getLife()));
 
         final TableRow lifeRow = new TableRow(getApplicationContext());
         lifeRow.addView(lifeImage);
@@ -79,7 +75,7 @@ public class MonsterInfoActivity extends AppCompatActivity {
         speedTextView.setTypeface(null, Typeface.BOLD);
 
         TextView speedAmount = new TextView(getApplicationContext());
-        speedAmount.setText(String.valueOf(monster.getSpeed()));
+        speedAmount.setText(String.valueOf(monsterData.getSpeed()));
 
         final TableRow speedRow = new TableRow(getApplicationContext());
         speedRow.addView(speedImage);
@@ -98,7 +94,7 @@ public class MonsterInfoActivity extends AppCompatActivity {
         staminaTextView.setTypeface(null, Typeface.BOLD);
 
         TextView staminaAmount = new TextView(getApplicationContext());
-        staminaAmount.setText(String.valueOf(monster.getStamina()));
+        staminaAmount.setText(String.valueOf(monsterData.getStamina()));
 
         final TableRow staminaRow = new TableRow(getApplicationContext());
         staminaRow.addView(staminaImage);
@@ -116,14 +112,14 @@ public class MonsterInfoActivity extends AppCompatActivity {
 
         //Combat Role:
         final TextView combatRoleTextView = new TextView(getApplicationContext());
-        combatRoleTextView.setText("ROL: "+monster.getCombatRole());
+        combatRoleTextView.setText("ROL: "+ monsterData.getCombatRole());
         combatRoleTextView.setTextSize(20);
         combatRoleTextView.setTypeface(null, Typeface.BOLD);
         combatRoleTextView.setGravity(Gravity.CENTER);
 
         //Category:
         final TextView categoryTextView = new TextView(getApplicationContext());
-        categoryTextView.setText("CATEGORY: "+monster.getCategory().toUpperCase());
+        categoryTextView.setText("CATEGORY: "+ monsterData.getCategory().toUpperCase());
         categoryTextView.setTextSize(18);
         categoryTextView.setTypeface(null, Typeface.BOLD);
         categoryTextView.setGravity(Gravity.CENTER);

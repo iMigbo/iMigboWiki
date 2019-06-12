@@ -1,11 +1,11 @@
 package com.example.imigbomonsterwiki;
 
-public class YoutubeVideo {
+public class YoutubeVideoData {
     private String key;
     private String title;
     private String description;
 
-    public YoutubeVideo(String key){
+    public YoutubeVideoData(String key){
         this.setKey(key);
     }
 

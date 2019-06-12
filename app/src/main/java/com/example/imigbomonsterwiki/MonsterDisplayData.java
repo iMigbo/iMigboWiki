@@ -1,6 +1,6 @@
 package com.example.imigbomonsterwiki;
 
-public class MonsterDisplay {
+public class MonsterDisplayData {
     private String imageKey;
     private int id;
 

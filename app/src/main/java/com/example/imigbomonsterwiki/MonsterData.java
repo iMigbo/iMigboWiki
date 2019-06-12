@@ -3,7 +3,7 @@ package com.example.imigbomonsterwiki;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Monster implements Serializable {
+public class MonsterData implements Serializable {
     private int id;
     private String name;
     private ArrayList<String> attributes = new ArrayList<>();
@@ -21,7 +21,7 @@ public class Monster implements Serializable {
     private String combatRole;
     private ArrayList <Object> books = new ArrayList<>(); //Pending JSON
 
-    public Monster (int id, String name)
+    public MonsterData(int id, String name)
     {
         this.id = id;
         this.setName(name);

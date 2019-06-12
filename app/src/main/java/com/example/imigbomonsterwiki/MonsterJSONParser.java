@@ -15,13 +15,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class JSONParser extends AsyncTask<Object, Monster[], Object> {
+public class MonsterJSONParser extends AsyncTask<Object, MonsterData[], Object> {
 
     private static final String monsterJSONURL = "https://mcx.socialpointgames.com/bs_toolbox/get_config?collection=items.units&columns=id,name,nameKey,attributes,rarity,img_name,tier_1,tier_2,tier_3,tier_4,special_skill,traits,life,power,speed,stamina,monster_origin,relics_categories,monster_combat_role";
 
     private MonsterDatabase database;
 
-    public JSONParser()
+    public MonsterJSONParser()
     {
 
     }
@@ -45,7 +45,7 @@ public class JSONParser extends AsyncTask<Object, Monster[], Object> {
                 final int id =  monsterData.getInt("id");
                 final String name = monsterData.getString("name");
 
-                Monster monster = new Monster(id, name);
+                MonsterData monster = new MonsterData(id, name);
 
                 final JSONArray attributes = monsterData.getJSONArray("attributes");
                 for(byte j = 0; j < attributes.length(); j++){
@@ -105,9 +105,9 @@ public class JSONParser extends AsyncTask<Object, Monster[], Object> {
 
     }
 
-    private void addAttacks(final JSONArray tierAttacks, Monster monster) throws JSONException {
+    private void addAttacks(final JSONArray tierAttacks, MonsterData monsterData) throws JSONException {
         for(byte j = 0; j < tierAttacks.length(); j++){
-            monster.addAttack(tierAttacks.getInt(j));
+            monsterData.addAttack(tierAttacks.getInt(j));
         }
     }
 }
