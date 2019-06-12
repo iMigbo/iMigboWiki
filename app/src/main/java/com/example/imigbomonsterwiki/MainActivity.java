@@ -30,9 +30,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                 case R.id.navigation_monsters:
                     setMonsterWikiLayout();
                     return true;
-                case R.id.navigation_settings:
-                    mTextMessage.setText(R.string.title_settings);
-                    return true;
             }
             return false;
         }
